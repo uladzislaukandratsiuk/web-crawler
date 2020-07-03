@@ -1,4 +1,11 @@
 package com.webcrawler.crawler_api;
 
-public interface UrlCrawler extends WebCrawler<String, Integer> {
+import java.util.List;
+import java.util.Set;
+
+public interface UrlCrawler {
+
+    Set<String> crawlUrl();
+
+    List<Integer> countElementHits(List<String> linkElements);
 }
