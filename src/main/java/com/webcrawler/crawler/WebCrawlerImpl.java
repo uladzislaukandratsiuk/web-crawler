@@ -26,8 +26,8 @@ public class WebCrawlerImpl implements WebCrawler {
     @Value("${max.visited.pages:15}")
     private int maxVisitedPages;
 
-    @Value("${link.name:https://github.com/vladkondratuk}")
-    private String linkName;
+    @Value("${root.link:https://github.com/vladkondratuk}")
+    private String rootLink;
 
     @Override
     public Set<String> crawl() {
@@ -37,7 +37,7 @@ public class WebCrawlerImpl implements WebCrawler {
 
         String current;
 
-        linksToVisit.push(linkName);
+        linksToVisit.push(rootLink);
 
         while (!linksToVisit.isEmpty()) {
 
@@ -49,14 +49,14 @@ public class WebCrawlerImpl implements WebCrawler {
                         log.info("visited {}, current {}", links.size(), current);
                     }
 
-                    Document document = Jsoup.connect(linkName).get();
+                    Document document = Jsoup.connect(rootLink).get();
                     Elements internalLinks = document.select("a[href]");
 
                     for (Element link : internalLinks) {
                         linksToVisit.push(link.attr("abs:href"));
                     }
 
-                } catch (IOException e) {
+                } catch (IOException | IllegalArgumentException e) {
                    log.error("{}", e.getMessage());
                 }
             }
