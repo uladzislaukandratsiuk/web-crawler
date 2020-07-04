@@ -21,12 +21,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource("classpath:crawler.properties")
 class WebCrawlerImplTest {
 
+    public static final String MALFORMED_LINK = "malformed link";
+    private static final String INVALID_LINK = "https://github.com/vladkondratuk/INVALID+LINK";
+    private static final int LINKS_AMOUNT = 20;
+
     @Value("${max.visited.pages:20}")
     private int maxVisitedPages;
-
-    private static final String INVALID_LINK = "https://github.com/vladkondratuk/INVALID+LINK";
-
-    private static final int LINKS_AMOUNT = 20;
 
     @Autowired
     private WebCrawler crawler;
@@ -41,13 +41,24 @@ class WebCrawlerImplTest {
 
     @Test
     void whenLinkIsInvalid_shouldThrowIOException() {
-        IOException exception = assertThrows(IOException.class, () -> {
-            Jsoup.connect(INVALID_LINK).get();
-        });
+        IOException exception =
+                assertThrows(IOException.class,
+                        () -> Jsoup.connect(INVALID_LINK).get());
 
         assertEquals("HTTP error fetching URL", exception.getMessage());
 
         assertTrue(exception.getMessage().contains("HTTP"));
+    }
+
+    @Test
+    void whenLinkIsMalformed_shouldThrowIllegalArgumentException() {
+        IllegalArgumentException exception =
+                assertThrows(IllegalArgumentException.class,
+                        () -> Jsoup.connect(MALFORMED_LINK).get());
+
+        assertEquals("Malformed URL: " + MALFORMED_LINK, exception.getMessage());
+
+        assertTrue(exception.getMessage().contains("Malformed"));
     }
 
     @Test
