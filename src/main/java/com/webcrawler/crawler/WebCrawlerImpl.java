@@ -33,9 +33,9 @@ public class WebCrawlerImpl implements WebCrawler {
 
     @Override
     public Set<String> crawlLink() {
-        Set<String> internalLinks = getInternalLinks(rootLink);
-        visitedPages = 0;
-        return internalLinks;
+        Set<String> rootWithInternalLinks = getInternalLinks(rootLink);
+        resetVisitedPagesToZero();
+        return rootWithInternalLinks;
     }
 
     @Override
@@ -46,12 +46,16 @@ public class WebCrawlerImpl implements WebCrawler {
 
         Map<Integer, Set<String>> depthAndCrawledLinks = new HashMap<>();
         Set<String> crawledLinks = new HashSet<>();
+        Set<String> repeatedLinks = new HashSet<>();
 
         crawledLinks.add(currentLink);
+        repeatedLinks.add(currentLink);
         depthAndCrawledLinks.put(currentLinkDepth, crawledLinks);
 
         crawledLinks = getInternalLinks(currentLink);
+        crawledLinks.removeAll(repeatedLinks);
         depthAndCrawledLinks.put(++currentLinkDepth, crawledLinks);
+        repeatedLinks = crawledLinks;
 
         for (String crawledLink : crawledLinks) {
 
@@ -59,12 +63,14 @@ public class WebCrawlerImpl implements WebCrawler {
 
             while (currentLinkDepth < maxLinkDepth) {
                 crawledLinks = getInternalLinks(currentLink);
+                crawledLinks.removeAll(repeatedLinks);
                 depthAndCrawledLinks.put(++currentLinkDepth, crawledLinks);
+                repeatedLinks = crawledLinks;
             }
         }
 
         log.info(depthAndCrawledLinks.toString());
-        visitedPages = 0;
+        resetVisitedPagesToZero();
 
         return depthAndCrawledLinks;
     }
@@ -90,9 +96,7 @@ public class WebCrawlerImpl implements WebCrawler {
 
             if (!links.contains(current) && visitedPages < maxVisitedPages) {
                 try {
-                    if (links.add(current)) {
-                        log.info("current {}", current);
-                    }
+                    links.add(current);
 
                     Document document = Jsoup.connect(linkName).get();
                     Elements internalLinks = document.select("a[href]");
@@ -108,5 +112,9 @@ public class WebCrawlerImpl implements WebCrawler {
         }
 
         return links;
+    }
+
+    private void resetVisitedPagesToZero() {
+        this.visitedPages = 0;
     }
 }
