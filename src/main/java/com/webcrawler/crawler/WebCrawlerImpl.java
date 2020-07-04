@@ -29,27 +29,72 @@ public class WebCrawlerImpl implements WebCrawler {
     @Value("${root.link:https://github.com/vladkondratuk}")
     private String rootLink;
 
+    private int visitedPages = 0;
+
     @Override
-    public Set<String> crawl() {
+    public Set<String> crawlLink() {
+        Set<String> internalLinks = getInternalLinks(rootLink);
+        visitedPages = 0;
+        return internalLinks;
+    }
+
+    @Override
+    public Map<Integer, Set<String>> crawlLinkWithDepth() {
+
+        String currentLink = rootLink;
+        int currentLinkDepth = 0;
+
+        Map<Integer, Set<String>> depthAndCrawledLinks = new HashMap<>();
+        Set<String> crawledLinks = new HashSet<>();
+
+        crawledLinks.add(currentLink);
+        depthAndCrawledLinks.put(currentLinkDepth, crawledLinks);
+
+        crawledLinks = getInternalLinks(currentLink);
+        depthAndCrawledLinks.put(++currentLinkDepth, crawledLinks);
+
+        for (String crawledLink : crawledLinks) {
+
+            currentLink = crawledLink;
+
+            while (currentLinkDepth < maxLinkDepth) {
+                crawledLinks = getInternalLinks(currentLink);
+                depthAndCrawledLinks.put(++currentLinkDepth, crawledLinks);
+            }
+        }
+
+        log.info(depthAndCrawledLinks.toString());
+        visitedPages = 0;
+
+        return depthAndCrawledLinks;
+    }
+
+    @Override
+    public List<Integer> countElementHits(List<String> linkElements) {
+        return null;
+    }
+
+    private Set<String> getInternalLinks(String linkName) {
 
         Set<String> links = new HashSet<>();
         Stack<String> linksToVisit = new Stack<>();
 
         String current;
 
-        linksToVisit.push(rootLink);
+        linksToVisit.push(linkName);
 
         while (!linksToVisit.isEmpty()) {
 
             current = linksToVisit.pop();
+            visitedPages++;
 
-            if (!links.contains(current) && links.size() < maxVisitedPages) {
+            if (!links.contains(current) && visitedPages < maxVisitedPages) {
                 try {
                     if (links.add(current)) {
-                        log.info("visited {}, current {}", links.size(), current);
+                        log.info("current {}", current);
                     }
 
-                    Document document = Jsoup.connect(rootLink).get();
+                    Document document = Jsoup.connect(linkName).get();
                     Elements internalLinks = document.select("a[href]");
 
                     for (Element link : internalLinks) {
@@ -57,16 +102,11 @@ public class WebCrawlerImpl implements WebCrawler {
                     }
 
                 } catch (IOException | IllegalArgumentException e) {
-                   log.error("{}", e.getMessage());
+                    log.error("{}", e.getMessage());
                 }
             }
         }
 
         return links;
-    }
-
-    @Override
-    public List<Integer> countElementHits(List<String> linkElements) {
-        return null;
     }
 }

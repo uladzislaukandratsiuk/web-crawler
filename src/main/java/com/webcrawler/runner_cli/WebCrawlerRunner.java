@@ -12,7 +12,7 @@ public class WebCrawlerRunner implements CommandLineRunner {
     private static final Logger log = LoggerFactory
             .getLogger(WebCrawlerRunner.class);
 
-    private WebCrawler webCrawler;
+    private final WebCrawler webCrawler;
 
     public WebCrawlerRunner(WebCrawler webCrawler) {
         this.webCrawler = webCrawler;
@@ -21,6 +21,7 @@ public class WebCrawlerRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        webCrawler.crawl();
+        webCrawler.crawlLink();
+        webCrawler.crawlLinkWithDepth();
     }
 }

@@ -10,10 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,10 +30,18 @@ class WebCrawlerImplTest {
 
     @Test
     void shouldReturnSetOfCrawledLinks() {
-        Set<String> crawledLinks = crawler.crawl();
+        Set<String> crawledLinks = crawler.crawlLink();
 
         assertNotNull(crawledLinks);
         assertTrue(crawledLinks.size() <= maxVisitedPages);
+    }
+
+    @Test
+    void shouldReturnMapOfDepthAndCrawledLinks() {
+        Map<Integer, Set<String>> linksWithDepth = crawler.crawlLinkWithDepth();
+
+        assertNotNull(linksWithDepth);
+        assertTrue(linksWithDepth.size() <= maxVisitedPages);
     }
 
     @Test
