@@ -19,7 +19,7 @@ class WebCrawlerImplTest {
 
     public static final String MALFORMED_LINK = "malformed link";
     private static final String INVALID_LINK = "https://github.com/vladkondratuk/INVALID+LINK";
-    private static final int LINKS_AMOUNT = 5;
+    private static final int LINKS_AMOUNT = 3;
 
     @Value("${max.visited.pages:20}")
     private int maxVisitedPages;

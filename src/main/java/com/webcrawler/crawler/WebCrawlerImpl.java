@@ -74,8 +74,8 @@ public class WebCrawlerImpl implements WebCrawler {
     }
 
     @Override
-    public Map<String, List<Integer>> countLinkElementHits
-            (Set<String> links, List<String> linkElements) {
+    public Map<String, List<Integer>> countLinkElementHits(Set<String> links,
+                                                           List<String> linkElements) {
 
         Map<String, List<Integer>> linkElementHits = new HashMap<>();
 
@@ -97,7 +97,8 @@ public class WebCrawlerImpl implements WebCrawler {
                     pageElements.forEach(pageElement -> textStrings.add(pageElement.text()));
 
                     termHits += textStrings.stream()
-                            .filter(text -> text.matches(".*\\b(\\w*" + element + "\\w*)\\b.*"))
+                            .filter(text ->
+                                    text.matches(".*\\b(\\w*" + element + "\\w*)\\b.*"))
                             .count();
 
                     elementHits.add(termHits);
