@@ -25,7 +25,7 @@ public class WebCrawlerRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        List<String> terms = Arrays.asList("Product", "Web", "Development", "software");
+        List<String> terms = Arrays.asList("Product", "Web", "Development", "software", "Full-stack");
         Set<String> links = webCrawler.crawlLink();
         webCrawler.crawlLinkWithDepth();
         webCrawler.countLinkElementHits(links, terms);

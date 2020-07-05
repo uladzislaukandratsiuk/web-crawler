@@ -87,15 +87,17 @@ public class WebCrawlerImpl implements WebCrawler {
             List<Integer> elementHits = new ArrayList<>();
 
             try {
-                Document document = Jsoup.connect(link).get();
-                Elements pageElements = document.getAllElements();
-
-                Set<String> textStrings = new HashSet<>(pageElements.eachText());
+                List<String> textStrings = new ArrayList<>();
 
                 for (String element : linkElements) {
 
+                    Document document = Jsoup.connect(link).get();
+                    Elements pageElements = document.getElementsContainingOwnText(element);
+
+                    pageElements.forEach(pageElement -> textStrings.add(pageElement.text()));
+
                     termHits += textStrings.stream()
-                            .filter(text -> text.matches(".*\\b" + element + "\\b.*"))
+                            .filter(text -> text.matches(".*\\b(\\w*" + element + "\\w*)\\b.*"))
                             .count();
 
                     elementHits.add(termHits);
