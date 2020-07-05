@@ -10,5 +10,5 @@ public interface WebCrawler {
 
     Map<Integer, Set<String>> crawlLinkWithDepth();
 
-    List<Integer> countElementHits(List<String> linkElements);
+    Map<String, List<Integer>> countLinkElementHits(Set<String> links, List<String> linkElements);
 }

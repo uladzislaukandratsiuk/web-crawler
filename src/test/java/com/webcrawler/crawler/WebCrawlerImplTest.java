@@ -2,7 +2,6 @@ package com.webcrawler.crawler;
 
 import com.webcrawler.crawler_api.WebCrawler;
 import org.jsoup.Jsoup;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,7 +19,7 @@ class WebCrawlerImplTest {
 
     public static final String MALFORMED_LINK = "malformed link";
     private static final String INVALID_LINK = "https://github.com/vladkondratuk/INVALID+LINK";
-    private static final int LINKS_AMOUNT = 20;
+    private static final int LINKS_AMOUNT = 5;
 
     @Value("${max.visited.pages:20}")
     private int maxVisitedPages;
@@ -67,12 +66,12 @@ class WebCrawlerImplTest {
     }
 
     @Test
-    @Disabled
-    void shouldReturnListOfElementHits() {
-        List<Integer> elementHits = crawler.countElementHits(listOfTerms());
+    void shouldReturnMapOfLinksAndElementHits() {
+        Map<String, List<Integer>> linkElementHits =
+                crawler.countLinkElementHits(setOfCrawledLinks(), listOfTerms());
 
-        assertNotNull(elementHits);
-        assertEquals(LINKS_AMOUNT, elementHits.size());
+        assertNotNull(linkElementHits);
+        assertEquals(LINKS_AMOUNT, linkElementHits.size());
     }
 
     private Set<String> setOfCrawledLinks() {
@@ -87,6 +86,7 @@ class WebCrawlerImplTest {
         List<String> terms = new ArrayList<>();
         terms.add("Java");
         terms.add("Spring");
+        terms.add("Web development");
         return terms;
     }
 }

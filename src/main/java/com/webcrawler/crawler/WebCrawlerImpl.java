@@ -3,7 +3,6 @@ package com.webcrawler.crawler;
 import com.webcrawler.crawler_api.WebCrawler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,15 +68,53 @@ public class WebCrawlerImpl implements WebCrawler {
             }
         }
 
-        log.info(depthAndCrawledLinks.toString());
         resetVisitedPagesToZero();
 
         return depthAndCrawledLinks;
     }
 
     @Override
-    public List<Integer> countElementHits(List<String> linkElements) {
-        return null;
+    public Map<String, List<Integer>> countLinkElementHits
+            (Set<String> links, List<String> linkElements) {
+
+        Map<String, List<Integer>> linkElementHits = new HashMap<>();
+
+        for (String link : links) {
+
+            int totalHits;
+            int termHits = 0;
+
+            List<Integer> elementHits = new ArrayList<>();
+
+            try {
+                Document document = Jsoup.connect(link).get();
+                Elements pageElements = document.getAllElements();
+
+                Set<String> textStrings = new HashSet<>(pageElements.eachText());
+
+                for (String element : linkElements) {
+
+                    termHits += textStrings.stream()
+                            .filter(text -> text.matches(".*\\b" + element + "\\b.*"))
+                            .count();
+
+                    elementHits.add(termHits);
+                    termHits = 0;
+                }
+
+            } catch (IOException | IllegalArgumentException e) {
+                log.error("{}", e.getMessage());
+            }
+
+            totalHits = elementHits.stream().mapToInt(hits -> hits).sum();
+            elementHits.add(totalHits);
+            linkElementHits.put(link, elementHits);
+        }
+
+        linkElementHits.forEach((link, elementHits) ->
+                log.info("{} {}", link, elementHits));
+
+        return linkElementHits;
     }
 
     private Set<String> getInternalLinks(String linkName) {
@@ -101,9 +138,9 @@ public class WebCrawlerImpl implements WebCrawler {
                     Document document = Jsoup.connect(linkName).get();
                     Elements internalLinks = document.select("a[href]");
 
-                    for (Element link : internalLinks) {
-                        linksToVisit.push(link.attr("abs:href"));
-                    }
+                    internalLinks.stream()
+                            .map(link -> link.attr("abs:href"))
+                            .forEach(linksToVisit::push);
 
                 } catch (IOException | IllegalArgumentException e) {
                     log.error("{}", e.getMessage());

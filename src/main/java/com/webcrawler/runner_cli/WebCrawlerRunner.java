@@ -6,6 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
 @Component
 public class WebCrawlerRunner implements CommandLineRunner {
 
@@ -21,7 +25,9 @@ public class WebCrawlerRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        webCrawler.crawlLink();
+        List<String> terms = Arrays.asList("Product", "Web", "Development", "software");
+        Set<String> links = webCrawler.crawlLink();
         webCrawler.crawlLinkWithDepth();
+        webCrawler.countLinkElementHits(links, terms);
     }
 }
