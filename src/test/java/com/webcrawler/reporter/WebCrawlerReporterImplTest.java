@@ -20,6 +20,7 @@ class WebCrawlerReporterImplTest {
 
     private static final String MALFORMED_LINK = "malformed link";
     private static final String INVALID_LINK = "https://github.com/INVALID+LINK";
+    private static final int TEN = 10;
 
     @Value("${max.visited.pages:20}")
     private int maxVisitedPages;
@@ -28,22 +29,21 @@ class WebCrawlerReporterImplTest {
     private WebCrawlerReporter reporter;
 
     @Test
-    void shouldReturnMapOfLinkWithElementHits() {
-        Map<String, List<Integer>> linkWithHits = reporter
-                .reportLinkWithElementHits(listOfTerms());
+    void shouldReturnMapOfLinksWithElementHits() {
+        Map<String, List<Integer>> linksWithHits = reporter
+                .reportLinksWithElementHits(listOfTerms());
 
-        assertNotNull(linkWithHits);
-        assertTrue(linkWithHits.size() <= maxVisitedPages);
+        assertNotNull(linksWithHits);
+        assertTrue(linksWithHits.size() <= maxVisitedPages);
     }
 
     @Test
-    @Disabled
-    void shouldReturnMapOfLinkWithTopTenElementHits() {
-        Map<String, List<Integer>> linkWithTopHits = reporter
-                .reportLinkWithTopTenElementHits(listOfTerms());
+    void shouldReturnMapOfLinksWithTopTenElementHits() {
+        Map<String, List<Integer>> linksWithTopHits = reporter
+                .reportLinksWithTopTenElementHits(listOfTerms());
 
-        assertNotNull(linkWithTopHits);
-        assertTrue(linkWithTopHits.size() <= maxVisitedPages);
+        assertNotNull(linksWithTopHits);
+        assertTrue(linksWithTopHits.size() <= TEN);
     }
 
     @Test

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.*;
 
+import static java.util.stream.Collectors.toMap;
+
 @Component
 public class WebCrawlerReporterImpl implements WebCrawlerReporter {
 
@@ -24,16 +26,16 @@ public class WebCrawlerReporterImpl implements WebCrawlerReporter {
     }
 
     @Override
-    public Map<String, List<Integer>> reportLinkWithElementHits(List<String> linkElements) {
-        return countLinkElementHits(linkElements);
+    public Map<String, List<Integer>> reportLinksWithElementHits(List<String> linkElements) {
+        return countLinksElementHits(linkElements);
     }
 
     @Override
-    public Map<String, List<Integer>> reportLinkWithTopTenElementHits(List<String> linkElements) {
-        return null;
+    public Map<String, List<Integer>> reportLinksWithTopTenElementHits(List<String> linkElements) {
+        return getLinksWithTopTenElementHits(linkElements);
     }
 
-    private Map<String, List<Integer>> countLinkElementHits(List<String> linkElements) {
+    private Map<String, List<Integer>> countLinksElementHits(List<String> linkElements) {
 
         Map<String, List<Integer>> linkElementHits = new HashMap<>();
         Set<String> links = webCrawler.crawlLinkWithDepth();
@@ -73,9 +75,28 @@ public class WebCrawlerReporterImpl implements WebCrawlerReporter {
             linkElementHits.put(link, elementHits);
         }
 
-        linkElementHits.forEach((link, elementHits) ->
+        return linkElementHits;
+    }
+
+    private Map<String, List<Integer>> getLinksWithTopTenElementHits(List<String> linkElements) {
+
+        Map<String, List<Integer>> linksAndHits =
+                countLinksElementHits(linkElements);
+
+        linksAndHits = linksAndHits
+                .entrySet()
+                .stream()
+                .sorted((hit1, hit2) ->
+                        (hit2.getValue().get(hit2.getValue().size() - 1))
+                        .compareTo((hit1.getValue().get(hit1.getValue().size() - 1))))
+                .limit(10)
+                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue,
+                        (k, v) -> v, LinkedHashMap::new));
+
+        log.info("Top Ten");
+        linksAndHits.forEach((link, elementHits) ->
                 log.info("{} {}", link, elementHits));
 
-        return linkElementHits;
+        return linksAndHits;
     }
 }
