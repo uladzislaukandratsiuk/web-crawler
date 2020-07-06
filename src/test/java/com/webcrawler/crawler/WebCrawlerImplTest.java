@@ -17,9 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource("classpath:crawler.properties")
 class WebCrawlerImplTest {
 
-    public static final String MALFORMED_LINK = "malformed link";
-    private static final String INVALID_LINK = "https://github.com/vladkondratuk/INVALID+LINK";
-    private static final int LINKS_AMOUNT = 3;
+    private static final String MALFORMED_LINK = "malformed link";
+    private static final String INVALID_LINK = "https://github.com/INVALID+LINK";
 
     @Value("${max.visited.pages:20}")
     private int maxVisitedPages;
@@ -63,30 +62,5 @@ class WebCrawlerImplTest {
         assertEquals("Malformed URL: " + MALFORMED_LINK, exception.getMessage());
 
         assertTrue(exception.getMessage().contains("Malformed"));
-    }
-
-    @Test
-    void shouldReturnMapOfLinksAndElementHits() {
-        Map<String, List<Integer>> linkElementHits =
-                crawler.countLinkElementHits(setOfCrawledLinks(), listOfTerms());
-
-        assertNotNull(linkElementHits);
-        assertEquals(LINKS_AMOUNT, linkElementHits.size());
-    }
-
-    private Set<String> setOfCrawledLinks() {
-        Set<String> crawledLinks = new HashSet<>();
-        for (int i = 0; i < LINKS_AMOUNT; i++) {
-            crawledLinks.add("https://github.com/page/" + i);
-        }
-        return crawledLinks;
-    }
-
-    private List<String> listOfTerms() {
-        List<String> terms = new ArrayList<>();
-        terms.add("Java");
-        terms.add("Spring");
-        terms.add("Web development");
-        return terms;
     }
 }
