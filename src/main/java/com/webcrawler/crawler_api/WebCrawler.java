@@ -8,7 +8,8 @@ public interface WebCrawler {
 
     Set<String> crawlLink();
 
-    Map<Integer, Set<String>> crawlLinkWithDepth();
+    Set<String> crawlLinkWithDepth();
 
-    Map<String, List<Integer>> countLinkElementHits(Set<String> links, List<String> linkElements);
+    Map<String, List<Integer>> countLinkElementHits(Set<String> links,
+                                                    List<String> linkElements);
 }

@@ -38,39 +38,32 @@ public class WebCrawlerImpl implements WebCrawler {
     }
 
     @Override
-    public Map<Integer, Set<String>> crawlLinkWithDepth() {
+    public Set<String> crawlLinkWithDepth() {
 
         String currentLink = rootLink;
         int currentLinkDepth = 0;
 
-        Map<Integer, Set<String>> depthAndCrawledLinks = new HashMap<>();
-        Set<String> crawledLinks = new HashSet<>();
-        Set<String> repeatedLinks = new HashSet<>();
+        Set<String> crawledLinksWithDepth = new HashSet<>();
 
-        crawledLinks.add(currentLink);
-        repeatedLinks.add(currentLink);
-        depthAndCrawledLinks.put(currentLinkDepth, crawledLinks);
+        while (currentLinkDepth < maxLinkDepth) {
 
-        crawledLinks = getInternalLinks(currentLink);
-        crawledLinks.removeAll(repeatedLinks);
-        depthAndCrawledLinks.put(++currentLinkDepth, crawledLinks);
-        repeatedLinks = crawledLinks;
+            Set<String> crawledLinks = getInternalLinks(currentLink);
+            crawledLinksWithDepth.addAll(crawledLinks);
 
-        for (String crawledLink : crawledLinks) {
+            currentLinkDepth++;
 
-            currentLink = crawledLink;
+            for (String crawledLink : crawledLinks) {
 
-            while (currentLinkDepth < maxLinkDepth) {
+                currentLink = crawledLink;
+
                 crawledLinks = getInternalLinks(currentLink);
-                crawledLinks.removeAll(repeatedLinks);
-                depthAndCrawledLinks.put(++currentLinkDepth, crawledLinks);
-                repeatedLinks = crawledLinks;
+                crawledLinksWithDepth.addAll(crawledLinks);
             }
         }
 
         resetVisitedPagesToZero();
 
-        return depthAndCrawledLinks;
+        return crawledLinksWithDepth;
     }
 
     @Override
