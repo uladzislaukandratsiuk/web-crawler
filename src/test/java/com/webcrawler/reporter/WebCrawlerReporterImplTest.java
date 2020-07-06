@@ -2,7 +2,6 @@ package com.webcrawler.reporter;
 
 import com.webcrawler.reporter_api.WebCrawlerReporter;
 import org.jsoup.Jsoup;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,7 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -29,18 +30,18 @@ class WebCrawlerReporterImplTest {
     private WebCrawlerReporter reporter;
 
     @Test
-    void shouldReturnMapOfLinksWithElementHits() {
+    void shouldReturnMapOfLinksWithTermHits() {
         Map<String, List<Integer>> linksWithHits = reporter
-                .reportLinksWithElementHits(listOfTerms());
+                .reportLinksWithTermHits(listOfTerms());
 
         assertNotNull(linksWithHits);
         assertTrue(linksWithHits.size() <= maxVisitedPages);
     }
 
     @Test
-    void shouldReturnMapOfLinksWithTopTenElementHits() {
+    void shouldReturnMapOfLinksWithTopTenTermHits() {
         Map<String, List<Integer>> linksWithTopHits = reporter
-                .reportLinksWithTopTenElementHits(listOfTerms());
+                .reportLinksWithTopTenTermHits(listOfTerms());
 
         assertNotNull(linksWithTopHits);
         assertTrue(linksWithTopHits.size() <= TEN);

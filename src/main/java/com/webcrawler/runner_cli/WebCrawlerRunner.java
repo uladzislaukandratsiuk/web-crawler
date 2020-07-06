@@ -25,7 +25,7 @@ public class WebCrawlerRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         List<String> terms = Arrays.asList("Product", "Web", "Development", "software", "Full-stack");
-        reporter.reportLinksWithElementHits(terms);
-        reporter.reportLinksWithTopTenElementHits(terms);
+        reporter.reportLinksWithTermHits(terms);
+        reporter.reportLinksWithTopTenTermHits(terms);
     }
 }

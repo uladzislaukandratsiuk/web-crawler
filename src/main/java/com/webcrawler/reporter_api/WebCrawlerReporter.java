@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface WebCrawlerReporter {
 
-    Map<String, List<Integer>> reportLinksWithElementHits(List<String> linkElements);
+    Map<String, List<Integer>> reportLinksWithTermHits(List<String> linkTerms);
 
-    Map<String, List<Integer>> reportLinksWithTopTenElementHits(List<String> linkElements);
+    Map<String, List<Integer>> reportLinksWithTopTenTermHits(List<String> linkTerms);
 }

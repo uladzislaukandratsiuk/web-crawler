@@ -26,70 +26,70 @@ public class WebCrawlerReporterImpl implements WebCrawlerReporter {
     }
 
     @Override
-    public Map<String, List<Integer>> reportLinksWithElementHits(List<String> linkElements) {
-        return getLinksWithElementHits(linkElements);
+    public Map<String, List<Integer>> reportLinksWithTermHits(List<String> linkTerms) {
+        return getLinksWithTermHits(linkTerms);
     }
 
     @Override
-    public Map<String, List<Integer>> reportLinksWithTopTenElementHits(List<String> linkElements) {
-        return getLinksWithTopTenElementHits(linkElements);
+    public Map<String, List<Integer>> reportLinksWithTopTenTermHits(List<String> linkTerms) {
+        return getLinksWithTopTenTermHits(linkTerms);
     }
 
-    private Map<String, List<Integer>> getLinksWithElementHits(List<String> linkElements) {
+    private Map<String, List<Integer>> getLinksWithTermHits(List<String> linkTerms) {
 
-        Map<String, List<Integer>> linkElementHits = new HashMap<>();
+        Map<String, List<Integer>> linkTermHits = new HashMap<>();
         Set<String> links = webCrawler.crawlLinkWithDepth();
 
         for (String link : links) {
 
             int totalHits;
-            int elementHits;
+            int termHits;
 
-            List<Integer> listOfElementHits = new ArrayList<>();
+            List<Integer> listOfTermHits = new ArrayList<>();
 
             try {
                 List<String> textStrings = new ArrayList<>();
 
-                for (String element : linkElements) {
+                for (String term : linkTerms) {
 
                     Document document = Jsoup.connect(link).get();
-                    Elements pageElements = document.getElementsContainingOwnText(element);
+                    Elements pageTerms = document.getElementsContainingOwnText(term);
 
-                    pageElements.forEach(pageElement -> textStrings.add(pageElement.text()));
+                    pageTerms.forEach(pageTerm -> textStrings.add(pageTerm.text()));
 
-                    elementHits = countElementHits(textStrings, element);
+                    termHits = countTermHits(textStrings, term);
 
-                    listOfElementHits.add(elementHits);
+                    listOfTermHits.add(termHits);
                 }
 
             } catch (IOException | IllegalArgumentException e) {
                 log.error("{}", e.getMessage());
             }
 
-            totalHits = countTotalHits(listOfElementHits);
+            totalHits = countTotalHits(listOfTermHits);
 
-            listOfElementHits.add(totalHits);
-            linkElementHits.put(link, listOfElementHits);
+            listOfTermHits.add(totalHits);
+            linkTermHits.put(link, listOfTermHits);
         }
 
-        return linkElementHits;
+        return linkTermHits;
     }
 
-    private int countElementHits(List<String> textStrings, String element) {
+    private int countTermHits(List<String> textStrings, String term) {
         return (int) textStrings.stream()
                 .filter(text -> text
-                        .matches(".*\\b(\\w*" + element + "\\w*)\\b.*"))
+                        .matches(".*\\b(\\w*" + term + "\\w*)\\b.*"))
                 .count();
     }
 
-    private int countTotalHits(List<Integer> listOfElementHits) {
-        return listOfElementHits.stream().mapToInt(hits -> hits).sum();
+    private int countTotalHits(List<Integer> listOfTermHits) {
+        return listOfTermHits.stream().mapToInt(hits -> hits).sum();
     }
 
-    private Map<String, List<Integer>> getLinksWithTopTenElementHits(List<String> linkElements) {
+    private Map<String, List<Integer>> getLinksWithTopTenTermHits(List<String> linkTerms) {
 
         Map<String, List<Integer>> linksAndHits =
-                getLinksWithElementHits(linkElements);
+                getLinksWithTermHits(linkTerms);
 
         linksAndHits = linksAndHits
                 .entrySet()
@@ -102,8 +102,8 @@ public class WebCrawlerReporterImpl implements WebCrawlerReporter {
                         (k, v) -> v, LinkedHashMap::new));
 
         log.info("Top Ten Links With Terms Hits:");
-        linksAndHits.forEach((link, elementHits) ->
-                log.info("{} {}", link, elementHits));
+        linksAndHits.forEach((link, termHits) ->
+                log.info("{} {}", link, termHits));
 
         return linksAndHits;
     }
