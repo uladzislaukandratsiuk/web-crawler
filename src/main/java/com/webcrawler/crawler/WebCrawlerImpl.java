@@ -31,13 +31,6 @@ public class WebCrawlerImpl implements WebCrawler {
     private int visitedPages = 0;
 
     @Override
-    public Set<String> crawlLink() {
-        Set<String> rootWithInternalLinks = getInternalLinks(rootLink);
-        resetVisitedPagesToZero();
-        return rootWithInternalLinks;
-    }
-
-    @Override
     public Set<String> crawlLinkWithDepth() {
 
         String currentLink = rootLink;
@@ -61,7 +54,7 @@ public class WebCrawlerImpl implements WebCrawler {
             }
         }
 
-        resetVisitedPagesToZero();
+        visitedPages = 0;
 
         return crawledLinksWithDepth;
     }
@@ -98,9 +91,5 @@ public class WebCrawlerImpl implements WebCrawler {
         }
 
         return links;
-    }
-
-    private void resetVisitedPagesToZero() {
-        this.visitedPages = 0;
     }
 }

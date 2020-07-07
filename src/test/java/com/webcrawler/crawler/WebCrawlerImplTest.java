@@ -27,14 +27,6 @@ class WebCrawlerImplTest {
     private WebCrawler crawler;
 
     @Test
-    void shouldReturnSetOfCrawledLinks() {
-        Set<String> crawledLinks = crawler.crawlLink();
-
-        assertNotNull(crawledLinks);
-        assertTrue(crawledLinks.size() <= maxVisitedPages);
-    }
-
-    @Test
     void shouldReturnSetOfCrawledLinksWithDepth() {
         Set<String> linksWithDepth = crawler.crawlLinkWithDepth();
 
