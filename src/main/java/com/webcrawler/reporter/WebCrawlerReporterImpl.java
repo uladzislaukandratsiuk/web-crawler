@@ -63,7 +63,7 @@ public class WebCrawlerReporterImpl implements WebCrawlerReporter {
                 }
 
             } catch (IOException | IllegalArgumentException e) {
-                log.error("{}", e.getMessage());
+                log.error("{}, {}", e.getMessage(), link);
             }
 
             totalHits = countTotalHits(listOfTermHits);

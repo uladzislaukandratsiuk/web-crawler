@@ -92,7 +92,7 @@ public class WebCrawlerImpl implements WebCrawler {
                             .forEach(linksToVisit::push);
 
                 } catch (IOException | IllegalArgumentException e) {
-                    log.error("{}", e.getMessage());
+                    log.error("{}, {}", e.getMessage(), linkName);
                 }
             }
         }
