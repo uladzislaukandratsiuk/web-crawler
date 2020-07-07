@@ -62,14 +62,14 @@ public class WebCrawlerReporterImpl implements WebCrawlerReporter {
                     listOfTermHits.add(termHits);
                 }
 
+                totalHits = countTotalHits(listOfTermHits);
+
+                listOfTermHits.add(totalHits);
+                linkTermHits.put(link, listOfTermHits);
+
             } catch (IOException | IllegalArgumentException e) {
                 log.error("{}, {}", e.getMessage(), link);
             }
-
-            totalHits = countTotalHits(listOfTermHits);
-
-            listOfTermHits.add(totalHits);
-            linkTermHits.put(link, listOfTermHits);
         }
 
         return linkTermHits;
