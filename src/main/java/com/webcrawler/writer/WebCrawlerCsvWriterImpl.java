@@ -35,11 +35,7 @@ public class WebCrawlerCsvWriterImpl implements WebCrawlerCsvWriter {
         Map<String, List<Integer>> linksWithTermsHits =
                 reporter.reportLinksWithTermHits(terms);
 
-        try {
-            createCSVFile(linksWithTermsHits, terms, fileName);
-        } catch (IOException e) {
-            log.error("{}", e.getMessage());
-        }
+        invokeCreateCsvFile(linksWithTermsHits, terms, fileName);
     }
 
     @Override
@@ -47,17 +43,22 @@ public class WebCrawlerCsvWriterImpl implements WebCrawlerCsvWriter {
 
         String fileName = "LinksWithTopTenTermHits.csv";
 
-        Map<String, List<Integer>> linksWithTermsHits =
+        Map<String, List<Integer>> linksWithTopTermsHits =
                 reporter.reportLinksWithTopTenTermHits(terms);
 
+        invokeCreateCsvFile(linksWithTopTermsHits, terms, fileName);
+    }
+
+    private void invokeCreateCsvFile(Map<String, List<Integer>> linksWithHits,
+                                     List<String> terms, String fileName) {
         try {
-            createCSVFile(linksWithTermsHits, terms, fileName);
+            createCsvFile(linksWithHits, terms, fileName);
         } catch (IOException e) {
             log.error("{}", e.getMessage());
         }
     }
 
-    private void createCSVFile(Map<String, List<Integer>> linksWithHits,
+    private void createCsvFile(Map<String, List<Integer>> linksWithHits,
                                List<String> terms, String fileName) throws IOException {
 
         FileWriter out = new FileWriter(fileName);

@@ -41,14 +41,12 @@ public class WebCrawlerReporterImpl implements WebCrawlerReporter {
         Set<String> links = webCrawler.crawlLinkWithDepth();
 
         for (String link : links) {
-
-            int totalHits;
-            int termHits;
-
-            List<Integer> listOfTermHits = new ArrayList<>();
-
             try {
+                List<Integer> listOfTermHits = new ArrayList<>();
                 List<String> textStrings = new ArrayList<>();
+
+                int totalHits;
+                int termHits;
 
                 for (String term : linkTerms) {
 

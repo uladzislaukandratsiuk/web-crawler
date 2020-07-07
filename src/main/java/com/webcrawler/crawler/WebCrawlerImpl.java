@@ -64,13 +64,11 @@ public class WebCrawlerImpl implements WebCrawler {
         Set<String> links = new HashSet<>();
         Stack<String> linksToVisit = new Stack<>();
 
-        String current;
-
         linksToVisit.push(linkName);
 
         while (!linksToVisit.isEmpty()) {
 
-            current = linksToVisit.pop();
+            String current = linksToVisit.pop();
             visitedPages++;
 
             if (!links.contains(current) && visitedPages < maxVisitedPages) {
