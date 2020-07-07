@@ -1,19 +1,19 @@
 package com.webcrawler.runner_cli;
 
 import com.webcrawler.writer_api.WebCrawlerCsvWriter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Component
+@PropertySource("classpath:crawler.properties")
 public class WebCrawlerRunner implements CommandLineRunner {
 
-    private static final Logger log = LoggerFactory
-            .getLogger(WebCrawlerRunner.class);
+    @Value("${terms.to.find:default,terms,list}")
+    private List<String> terms;
 
     private final WebCrawlerCsvWriter writer;
 
@@ -23,11 +23,6 @@ public class WebCrawlerRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        List<String> terms = Arrays
-                .asList("Product", "Web",
-                        "Development", "software",
-                        "web app", "Full-stack");
         writer.writeLinksWithTermHits(terms);
         writer.writeLinksWithTopTenTermHits(terms);
     }
