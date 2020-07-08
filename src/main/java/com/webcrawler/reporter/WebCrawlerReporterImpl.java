@@ -99,9 +99,9 @@ public class WebCrawlerReporterImpl implements WebCrawlerReporter {
                 .collect(toMap(Map.Entry::getKey, Map.Entry::getValue,
                         (k, v) -> v, LinkedHashMap::new));
 
-        log.info("Top Ten Links With Terms Hits:");
+        log.info("\nTop Ten Links With Terms Hits:");
         linksAndHits.forEach((link, termHits) ->
-                log.info("{} {}", link, termHits));
+                log.info("\n{} {}", link, termHits));
 
         return linksAndHits;
     }

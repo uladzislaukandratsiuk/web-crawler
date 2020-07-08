@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,16 +53,17 @@ public class WebCrawlerCsvWriterImpl implements WebCrawlerCsvWriter {
     private void invokeCreateCsvFile(Map<String, List<Integer>> linksWithHits,
                                      List<String> terms, String fileName) {
         try {
-            createCsvFile(linksWithHits, terms, fileName);
+            String filePath = "statistics" + File.separator + fileName;
+            createCsvFile(linksWithHits, terms, filePath);
         } catch (IOException e) {
             log.error("{}", e.getMessage());
         }
     }
 
     private void createCsvFile(Map<String, List<Integer>> linksWithHits,
-                               List<String> terms, String fileName) throws IOException {
+                               List<String> terms, String filePath) throws IOException {
 
-        FileWriter out = new FileWriter(fileName);
+        FileWriter out = new FileWriter(filePath);
 
         try (CSVPrinter printer = new CSVPrinter(out, CSVFormat.DEFAULT
                 .withHeader(getHeaders(terms)))) {
