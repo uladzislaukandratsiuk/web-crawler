@@ -18,6 +18,8 @@ the page and collect statistics, e.g.
    [Web-crawler reporter implementation.](documentation/web-crawler-reporter_impl.md)
    
    [Web-crawler csv writer implementation.](documentation/web-crawler-writer_impl.md)
+   
+   [Web-crawler test run example video .mp4](documentation/video/web_crawler_run.mp4)
 
 ### Prerequisites
    
