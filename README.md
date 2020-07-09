@@ -16,6 +16,8 @@ the page and collect statistics, e.g.
    [Web-crawler implementation.](documentation/web-crawler_impl.md)
    
    [Web-crawler reporter implementation.](documentation/web-crawler-reporter_impl.md)
+   
+   [Web-crawler csv writer implementation.](documentation/web-crawler-writer_impl.md)
 
 ### Prerequisites
    
@@ -41,7 +43,7 @@ the page and collect statistics, e.g.
 
 ### Setup configuration:
     
-#### 1. After installing open directory with a project.
+##### 1. After installing open directory with a project.
   
   If you installed project with a git: 
   
@@ -51,7 +53,7 @@ the page and collect statistics, e.g.
     
     $ cd web-crawler-master 
   
-#### 2. Properties explanation.
+##### 2. Properties explanation.
   
  There are 4 fields with default values.
   
@@ -76,7 +78,7 @@ the page and collect statistics, e.g.
  - `terms.to.find` - list of strings that represent `terms` for a crawler to find and count hits.
  `terms` - a word or phrase used to describe a thing.
       
-#### 3. Set up fields with your values. 
+##### 3. Set up fields with your values. 
  
  Go to [src/main/resources/crawler.properties](src/main/resources/crawler.properties).
  
