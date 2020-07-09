@@ -17,7 +17,7 @@ public interface WebCrawlerCsvWriter {
 
 ### WebCrawlerCsvWriterImpl
 
-WebCrawlerCsvWriterImpl implements WebCrawler api. Using `Apache Commons CSV library` library.
+WebCrawlerCsvWriterImpl implements WebCrawler api. Using `Apache Commons CSV` library.
 
 #### Apache Commons CSV library
  

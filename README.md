@@ -112,6 +112,40 @@ the page and collect statistics, e.g.
   
   Successful execution example:
   
-  ![Successful execution](documentation/images/success_execution.png)   
+  ![Successful execution](documentation/images/success_execution.png) 
+  
+### Unsuccessful execution examples 
+    
+   If link is invalid, you get "HTTP error fetching URL" error message.  
+    
+   Invalid link example: 
+```properties
+    root.link=https://www.softeq.com/bad link
+```  
+      
+   ![invalid link](documentation/images/invalid_link.png)
+   
+   If link is malformed, you get "Malformed URL: " error message.
+   
+   Malformed link example: 
+```properties
+    root.link=malformed
+```  
+    
+   ![malformed link](documentation/images/malformed_link.png)
+   
+#### Failure execution example
+
+ If for fields `max.link.depth` or `max.visited.pages` instead integer value you put float or string values. 
+ Build will fail, properties validator not implemented.   
+    
+   Invalid properties value: 
+```properties
+    max.link.depth=2.9
+    max.visited.pages=vsd
+```  
+
+   ![build fail](documentation/images/build_fail.png)
+
 
 >Produced by Vladiskav Kondratuk 2020
