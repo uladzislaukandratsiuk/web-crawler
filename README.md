@@ -147,5 +147,8 @@ the page and collect statistics, e.g.
 
    ![build fail](documentation/images/build_fail.png)
 
+### Test coverage jacoco local report
+  
+  ![jacoco coverage report](documentation/images/jacoco_report.png)
 
 >Produced by Vladiskav Kondratuk 2020
