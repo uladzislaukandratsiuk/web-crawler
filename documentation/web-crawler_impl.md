@@ -79,8 +79,8 @@ public class WebCrawlerImpl implements WebCrawler {
 #### public Set<String> crawlLinkWithDepth() - in depth
 
 ```java
-   @Override
-    public Set<String> crawlLinkWithDepth() {
+        @Override
+        public Set<String> crawlLinkWithDepth() {
         
         /*
             String currentLink references to predefined link value  
@@ -140,7 +140,7 @@ public class WebCrawlerImpl implements WebCrawler {
 #### private Set<String> getInternalLinks(String linkName) - in depth
 
 ```java
-private Set<String> getInternalLinks(String linkName) {
+        private Set<String> getInternalLinks(String linkName) {
 
         /*
             Set<String> links - represent set of internal links for specific link(page).
@@ -201,3 +201,5 @@ private Set<String> getInternalLinks(String linkName) {
         return links;
     }
 ```
+
+[Back to README](../README.md)

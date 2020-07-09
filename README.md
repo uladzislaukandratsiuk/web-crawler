@@ -9,8 +9,13 @@ visited pages limit. The main purpose of this crawler to detect the presence of 
 the page and collect statistics, e.g.
 
 ### Project documentation
+   
+   #### Web crawler layers
+   ![Web crawler layers](documentation/images/web_crawler_apis.png)
     
-   [Web-crawler implementation.](documentation/web-crawler_implementation.md)
+   [Web-crawler implementation.](documentation/web-crawler_impl.md)
+   
+   [Web-crawler reporter implementation.](documentation/web-crawler-reporter_impl.md)
 
 ### Prerequisites
    
